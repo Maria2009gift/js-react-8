@@ -1,58 +1,53 @@
 import "./App.css";
-import React, { Component } from "react";
+import { useState } from "react";
 import FeedbackOptions from "./components/FeedbackOptions/FeedbackOptions ";
 import Statistic from "./components/Statistic/Statistic";
 
-class App extends Component {
-  state = {
-    good: 0,
-    neutral: 0,
-    bad: 0,
+function App() {
+  const [good, setGood] = useState(0);
+  const [neutral, setNeutral] = useState(0);
+  const [bad, setGoodbad] = useState(0);
+
+  const goodRating = () => {
+    setGood(good + 1);
   };
 
-  goodRating = () => {
-    this.setState((prevState) => ({ good: prevState.good + 1 }));
+  const neutralRating = () => {
+    setNeutral(neutral + 1);
   };
 
-  neutralRating = () => {
-    this.setState((prevState) => ({ neutral: prevState.neutral + 1 }));
+  const badRating = () => {
+    setGoodbad(bad + 1);
   };
 
-  badRating = () => {
-    this.setState((prevState) => ({ bad: prevState.bad + 1 }));
+  const countTotalFeedback = () => {
+    return good + neutral + bad;
   };
 
-  countTotalFeedback = () => {
-    return this.state.good + this.state.neutral + this.state.bad;
-  };
-
-  countPositiveFeedbackPercentage = () => {
-    let total = this.state.good + this.state.neutral + this.state.bad;
+  const countPositiveFeedbackPercentage = () => {
+    let total = good + neutral + bad;
     return (
-      Number.parseInt(
-        (Number.parseInt(this.state.good) * 100) / Number.parseInt(total)
-      ) + "%"
+      Number.parseInt((Number.parseInt(good) * 100) / Number.parseInt(total)) +
+      "%"
     );
   };
 
-  render() {
-    return (
-      <>
-        <FeedbackOptions
-          addGood={this.goodRating}
-          addNeutral={this.neutralRating}
-          addBad={this.badRating}
-        />
-        <Statistic
-          good={this.state.good}
-          neutral={this.state.neutral}
-          bad={this.state.bad}
-          total={this.countTotalFeedback()}
-          positivePercentage={this.countPositiveFeedbackPercentage()}
-        />
-      </>
-    );
-  }
+  return (
+    <>
+      <FeedbackOptions
+        addGood={goodRating}
+        addNeutral={neutralRating}
+        addBad={badRating}
+      />
+      <Statistic
+        good={good}
+        neutral={neutral}
+        bad={bad}
+        total={countTotalFeedback()}
+        positivePercentage={countPositiveFeedbackPercentage()}
+      />
+    </>
+  );
 }
 
 export default App;
